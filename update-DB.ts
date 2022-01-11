@@ -46,4 +46,5 @@ const populateDB = async () => {
 
 (async () => {
   await populateDB();
+  mongoose.disconnect()
 })();
