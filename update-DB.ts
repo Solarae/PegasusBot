@@ -2,11 +2,10 @@ import mongoose from "mongoose";
 import Card, { ICard } from "./models/Card";
 import axios from "axios";
 import dotenv from "dotenv";
-import path from "path";
+
 dotenv.config();
 
-import { download } from "./download";
-const imagesDir = path.join(__dirname, "images");
+import { upload } from "./upload"
 
 mongoose
   .connect(process.env.MONGO_URI!)
@@ -32,11 +31,11 @@ const populateDB = async () => {
       }
       const card_images = card.card_images;
       for (const card_image of card_images) {
-        await download(
-          card_image.image_url,
-          `${imagesDir}/${path.basename(card_image.image_url)}`,
-          "keepExisting"
-        );
+        await upload({
+          url: card_image.image_url,
+          bucket: "industrial-illusions",
+          onConflict: "keepExisting"
+        });
       }
     } catch (error) {
       console.log("Error");
