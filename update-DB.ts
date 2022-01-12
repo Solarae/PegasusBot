@@ -33,7 +33,7 @@ const populateDB = async () => {
       for (const card_image of card_images) {
         await upload({
           url: card_image.image_url,
-          bucket: "industrial-illusions",
+          bucket: process.env.S3_BUCKET_NAME!,
           onConflict: "keepExisting"
         });
       }
